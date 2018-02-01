@@ -1,10 +1,12 @@
 import { Routes, RouterModule } from '@angular/router';
 
 import { LoginComponent } from './login';
+import { DevicesComponent } from './devices';
 
 const appRoutes: Routes = [
     // { path: '', component: HomeComponent, canActivate: [AuthGuard] },
-    { path: 'login', component: LoginComponent },
+    { path: 'login/:token', component: LoginComponent },
+    { path: 'dispositivos/:token', component: DevicesComponent },
     // { path: 'register', component: RegisterComponent },
 
     // otherwise redirect to home
