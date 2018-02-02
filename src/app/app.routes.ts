@@ -6,7 +6,7 @@ import { DevicesComponent } from './devices';
 const appRoutes: Routes = [
     // { path: '', component: HomeComponent, canActivate: [AuthGuard] },
     { path: 'login/:token', component: LoginComponent },
-    { path: 'dispositivos/:token', component: DevicesComponent },
+    { path: 'devices', component: DevicesComponent },
     // { path: 'register', component: RegisterComponent },
 
     // otherwise redirect to home
