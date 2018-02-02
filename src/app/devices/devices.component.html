@@ -1,0 +1,9 @@
+<div fxLayout="column" fxFlex [class.dark-theme]="isDarkTheme">
+  <button mat-raised-button (click)="authorize()">Receber Alerta Nesse Dispositivo</button>
+  <mat-nav-list>
+    <mat-list-item *ngFor="let token of tokens">
+      <mat-icon>perm_device_information</mat-icon>
+      <span>{{token}}</span>
+    </mat-list-item>
+  </mat-nav-list>
+</div>
