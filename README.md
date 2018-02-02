@@ -29,4 +29,7 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 ## Deploy
 Run `firebase login` in the first deploy.
+
+
+Run `ng build`
 Run `firebase deploy`. It will build and deploy the new version.
