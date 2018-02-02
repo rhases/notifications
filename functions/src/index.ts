@@ -63,13 +63,11 @@ export let onNewMessageSendFCM = functions.firestore
             .collection('fcmTokens')
             .get()
             .then(snapshot => {
-                snapshot.forEach(doc => {
-                    if (!doc.data().token) return '';
-                    
-                    const token = doc.data().token;
-                    console.log(doc.id, '=>', token);
-                    return sendMessage(token, payload, options);
-                });
+                const tokens = snapshot.docs
+                    .map(doc => doc.data().token)
+                    .filter(token => !!token)
+                console.log(tokens, '=>', payload);
+                return sendMessage(tokens, payload, options);
             })
             .catch(err => {
                 console.error('Error getting fcmTokens and sending msg', err);
