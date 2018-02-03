@@ -32,6 +32,7 @@ export class DevicesComponent implements OnInit {
         this.userUid = user.uid;
         this.loadDevices(this.userUid);
       } else {
+        // TODO redirect to login?
         console.log('user not authenticated');
       }
     });

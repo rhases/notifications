@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { AngularFireAuth } from 'angularfire2/auth';
+import { AngularFirestore } from 'angularfire2/firestore';
 import * as firebase from 'firebase/app';
 import { environment } from '../../environments/environment';
 
@@ -18,6 +19,7 @@ export class LoginComponent implements OnInit {
 
     constructor(
         private route: ActivatedRoute,
+        private db: AngularFirestore,
         private router: Router,
         private afAuth: AngularFireAuth) {
         this.route
@@ -69,11 +71,18 @@ export class LoginComponent implements OnInit {
                     photoURL: picture
                 })
                 .catch(self.handleMinorError)
-                .then(() => user.updateEmail(email))
+                .then(() => email && user.updateEmail(email))
                 .catch(self.handleMinorError)
                 .then(() => phone && user.updatePhoneNumber(phone))
-                .catch(self.handleMinorError);
-            });
+                .catch(self.handleMinorError)
+                .then(() => rhasesUser);
+            })
+            .then(rhasesUser => // set roles
+                this.db
+                    .collection('users')
+                    .doc(rhasesUser._id)
+                    .set({ roles: rhasesUser.roles})
+            );
         };
     }
 
