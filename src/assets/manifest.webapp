@@ -1,0 +1,26 @@
+{
+  "version": "1.0.0",
+  "name": "Notifications",
+  "launch_path": "/index.html",
+  "description": "Receba Notificações da Rhases",
+  "developer": {
+    "name": "Rhases",
+    "url": "https://www.rhases.com.br"
+  },
+  "installs_allowed_from": [
+    "*"
+  ],
+  "default_locale": "pt",
+  "permissions": {
+  },
+  "locales": {
+    "pt": {
+      "name": "Notifications",
+      "description": "Receba notificações da Rhases"
+    },
+    "en": {
+      "name": "Notifications",
+      "description": "Receive notifications from Rhases"
+    }
+  }
+}

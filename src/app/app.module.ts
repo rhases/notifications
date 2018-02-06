@@ -1,11 +1,14 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule, Routes } from '@angular/router';
 import { routing } from './app.routes';
+import { FormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
+import { MessagesComponent } from './messages/messages.component';
 
 import { AngularFireModule } from 'angularfire2';
 //import { AngularFirestoreModule } from 'angularfire2/firestore';
@@ -22,10 +25,13 @@ import { AngularFirestoreModule } from 'angularfire2/firestore';
   declarations: [
     AppComponent,
     LoginComponent,
-    DevicesComponent
+    DevicesComponent,
+    MessagesComponent
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
+    FormsModule,
     MyMaterialModule,
     PushNotificationModule,
     routing,

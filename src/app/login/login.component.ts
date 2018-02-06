@@ -81,7 +81,7 @@ export class LoginComponent implements OnInit {
                 this.db
                     .collection('users')
                     .doc(rhasesUser._id)
-                    .set({ roles: rhasesUser.roles})
+                    .set({ roles: rhasesUser.roles })
             );
         };
     }

@@ -7,4 +7,8 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'app';
+  navLinks = [
+    { path: 'messages', label: 'Mensagens', icon: 'notifications' },
+    { path: 'devices', label: 'Dispositivos', icon: 'devices' }
+  ];
 }

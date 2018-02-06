@@ -11,17 +11,26 @@ import { Observable } from 'rxjs/Observable';
 import { PushNotificationService } from '../../components/push-notification/push-notification.service';
 // import { snapshotToArray } from '../../../components/util';
 
+import { Howl } from 'howler';
+
+
+
 @Component({
-  templateUrl: './devices.component.html'
+  templateUrl: './messages.component.html'
 })
-export class DevicesComponent implements OnInit {
+export class MessagesComponent implements OnInit {
   userUid;
-  tokens = [];
+  messages = [];
+  sound: Howl;
 
   constructor(
     private pushNotificationService: PushNotificationService,
     private db: AngularFirestore,
     private afAuth: AngularFireAuth) {
+
+    this.sound = new Howl({
+      src: ['assets/definite.mp3']
+    });
   }
 
   ngOnInit() {
@@ -30,33 +39,49 @@ export class DevicesComponent implements OnInit {
         // User is signed in.
         console.log(user);
         this.userUid = user.uid;
-        this.loadDevices(this.userUid);
+        this.loadMessages(this.userUid);
       } else {
         // TODO redirect to login?
         console.log('user not authenticated');
       }
     });
+    this.playSoundAlert();
   }
 
-  authorize() {
-    this.pushNotificationService
-    .requestNotificationsPermissions(this.userUid)
-    .catch(err => {
-      console.log(err);
-    });
-  }
-
-  loadDevices(userUid) {
+  loadMessages(userUid) {
     const self = this;
-    this.db.collection('users')
-      .doc(userUid)
-      .collection('fcmTokens')
+    const userRef = this.db.collection('users')
+      .doc(userUid);
+
+    // private messages
+    userRef
+      .collection('messages')
       .valueChanges()
-      .subscribe(tokens_ =>
-        tokens_.forEach(token =>
-          self.tokens.push(token))
-      );
+      .subscribe(message => { self.messages.push(message); });
+
+    // messages to user roles
+    userRef
+      .valueChanges()
+      .forEach(user => {
+        user['roles'].forEach(role => this.loadTopic(role) );
+       });
+
   }
 
+  loadTopic(role) {
+    const self = this;
+    this.db.collection('roles')
+      .doc(role)
+      .collection('messages')
+      .valueChanges()
+      .subscribe(messages =>
+        messages.forEach(
+          message => self.messages.push(message)));
+  }
+
+  playSoundAlert() {
+    // Shoot the laser!
+    this.sound.play();
+  }
 
 }
