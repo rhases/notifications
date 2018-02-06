@@ -7,7 +7,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
+import { AuthGuard } from './_guards/auth.guards';
 import { LoginComponent } from './login/login.component';
+import { DevicesComponent } from './devices';
 import { MessagesComponent } from './messages/messages.component';
 
 import { AngularFireModule } from 'angularfire2';
@@ -16,7 +18,6 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 
 import { environment } from '../environments/environment';
-import { DevicesComponent } from './devices';
 import { MyMaterialModule } from './my-material.module';
 import { PushNotificationModule } from '../components/push-notification';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
@@ -39,7 +40,7 @@ import { AngularFirestoreModule } from 'angularfire2/firestore';
     AngularFirestoreModule,
     AngularFireAuthModule, // imports firebase/auth, only needed for auth features,
   ],
-  providers: [],
+  providers: [AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

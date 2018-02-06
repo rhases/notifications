@@ -32,6 +32,8 @@ export class LoginComponent implements OnInit {
 
     ngOnInit() {
         return this.route.params.subscribe(params => {
+            this.checkToken(params.token);
+
             return this.afAuth.auth
             .signInWithCustomToken(params.token) // signin in the firebase
             .then(this.updateProfile(this.authorization))
@@ -44,6 +46,14 @@ export class LoginComponent implements OnInit {
                 console.error(errorCode, errorMessage);
             });
         });
+    }
+
+    checkToken(token) {
+        if (!token) {
+            window.location.href = environment.loginUrl;
+            return false;
+        }
+        return true;
     }
 
     /**

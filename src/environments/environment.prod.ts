@@ -1,12 +1,13 @@
 export const environment = {
   production: true,
   firebase: {
-    apiKey: 'AIzaSyArB_C3XliF16k67zT-pBSwmFoJ9jeihNM',
-    authDomain: 'notifications-homolog.firebaseapp.com',
-    databaseURL: 'https://notifications-homolog.firebaseio.com',
-    projectId: 'notifications-homolog',
-    storageBucket: 'notifications-homolog.appspot.com',
-    messagingSenderId: '684146341663'
+    apiKey: 'AIzaSyAyAu-sFWyVJgJFWRokuC4tLErfi048_YA',
+    authDomain: 'notifications-prod.firebaseapp.com',
+    databaseURL: 'https://notifications-prod.firebaseio.com',
+    projectId: 'notifications-prod',
+    storageBucket: 'notifications-prod.appspot.com',
+    messagingSenderId: '496879395864'
   },
-  rhasesAuthServiceHost: 'http://auth.api.rhases.com.br'
+  rhasesAuthServiceHost: 'http://auth.api.rhases.com.br',
+  loginUrl: 'http://parceiro.rhases.com.br/notificacoes'
 };

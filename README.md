@@ -23,13 +23,33 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
 
 
+## Setup 
+Run `firebase use --add`
+choose notifications-homolog
+when prompted, choose to use `homolog` as alias
+
+
+Run `firebase use --add`
+choose notifications-prod
+when prompted, choose to use `prod` as alias
+
+
 ## Deploy
 Run `firebase login` in the first deploy.
 
 
+## Deploy Homolog
+RUn `firebase use homolog`
 Run `ng build`
-Run `firebase deploy`. It will build and deploy the new version.
+Run `firebase deploy --only hosting` for deploy frontend project.
 
+Run `firebase deploy --only functions` for deploy backend project.
+
+## Deploy Prod
+Run `firebase use prod`
+Run `ng build --env=prod`
+Run `firebase deploy --only hosting` for deploy frontend project.
+Run `firebase deploy --only functions` for deploy backend project.
 
 ## logs
 Run `firebase functions:logs` 

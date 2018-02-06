@@ -1,8 +1,8 @@
 @import '~@angular/material/prebuilt-themes/indigo-pink.css';
 
 body {
-    padding: 2em 23em;
-    background:lightgray;
+    margin: 0px !important;
+    padding: 0px;
 }
 
 .menu-spacer {
