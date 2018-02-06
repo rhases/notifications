@@ -1,5 +1,6 @@
 import * as functions from 'firebase-functions';
 import * as admin  from 'firebase-admin';
+import * as _  from 'lodash';
 
 admin.initializeApp(functions.config().firebase);
 const db = admin.firestore();
@@ -40,34 +41,36 @@ export let notify = functions.https.onRequest((req, res) => {
 
 export let notifyRole = functions.https.onRequest((req, res) => {
     const { role, ...message } = req.body;
-
+    
     if (!role) {
         res.status(500).send(`invalid request. 
         Check if the header for { content-type: application/json} parameter`)
         return '';
     }
+    
+    const { payload, options } = tryGetPayloadAndOptions(message)
+    //remove not accept chars
+    const topic = topifyStr(role); 
 
     return db.collection('roles')
         .doc(role)
         .collection('messages')
         .add(message)
         .then( () => {
-             // ES6 Destructuring assignment
-            const { payload, options } = getPlayloadAndOptions(message)
-
             // Send a message to devices subscribed to the provided topic.
-            return admin.messaging().sendToTopic(role, payload, options)
+            return admin.messaging().sendToTopic(topic, payload, options)
                 .then(function (response) {
                     // See the MessagingTopicResponse reference documentation for the
                     // contents of response.
-                    logger.info("Successfully sent message:", response);
+                    logger.info(`Successfully sent message to ${topic}:`, response);
                 })
-
         })
         .then(ref => {
             res.status(200).send('ok');
         })
         .catch(function (error) {
+            logger.error(error);
+            logger.error(topic, payload, options);
             res.status(500).send(error);
         });
 });
@@ -85,7 +88,7 @@ export let onNewMessageSendFCM = functions.firestore
         const userId = event.params.userId;
         
         // ES6 Destructuring assignment
-        const { payload, options } = getPlayloadAndOptions(event.data.data())
+        const { payload, options } = tryGetPayloadAndOptions(event.data.data())
 
         if (!event.params.userId) {
             logger.error(event.params);
@@ -108,14 +111,32 @@ export let onNewMessageSendFCM = functions.firestore
             });
     });
 
-function getPlayloadAndOptions(content){
-    const { data, title, body, clickAction, icon, ...options } = content;
+function getPayloadAndOptions(content){
+    logger.info(content);
+    // ES6 Destructuring assignment
+    const { data, title, body, clickAction, icon, ...options_ } = content;
+    // remove undefied fields
+    const notification = _.pickBy({ title, body, clickAction, icon }, _.identity); 
 
-    const payload = { notification: { title, body, clickAction, icon } };
-    if (data) {
-        payload['data'] = JSON.parse(data);
+    const payload = { notification };
+    if (data && _.isObject(data)) {
+        payload['data'] = data;
     }
+
+    // remove undefied fields
+    const options = _.pickBy(options_, _.identity);
     return { payload, options };
+}
+
+function tryGetPayloadAndOptions(content){
+    try {
+        return getPayloadAndOptions(content);
+    }catch(err){
+        logger.error('invalid message');
+        logger.error(content);
+        logger.error(err);
+        return undefined;
+    }
 }
 
 function sendMessage(registrationToken, payload, options) {
@@ -150,7 +171,8 @@ export let subscribeNewDeviceToUserRolesTopic = functions.firestore
             .get()
             .then( user => {
                 const roles = user
-                .get('roles')
+                    .get('roles')
+                    .map(topifyStr);
 
                 logger.info(`subscribing token to roles topics: ${roles}`);
 
@@ -163,4 +185,9 @@ function subcribeToRolesTopics(token, roles:Array<string>){
         messaging.subscribeToTopic(token, role))
 
     return Promise.all(promises);
+}
+
+// replace not accepted as topics identificators
+function topifyStr(str){
+    return str.replace(RegExp('[^a-zA-Z0-9-_.~%]'), '~')
 }
