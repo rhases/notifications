@@ -15,24 +15,24 @@ const logger = { info: console.log, error: console.error }
 /**
  *  POST /notify
  *  Content-Type: application/json
- *  body { 
- *      userId, 
+ *  body {
+ *      userId,
  *      message
- *   } 
+ *   }
  */
 export let notify = functions.https.onRequest((req, res) => {
     const { userId, ...message } = req.body;
 
     if (!userId){
-        res.status(500).send(`invalid request. 
+        res.status(500).send(`invalid request.
         Check if the header for { content-type: application/json} parameter`)
         return '';
     }
-    
+
     return db.collection('users')
     .doc(userId)
     .collection('messages')
-    .add(message)
+    .add({ ...message, createdAt:new Date() })
     .then(ref => {
         res.status(200).send('ok');
     });
@@ -41,21 +41,21 @@ export let notify = functions.https.onRequest((req, res) => {
 
 export let notifyRole = functions.https.onRequest((req, res) => {
     const { role, ...message } = req.body;
-    
+
     if (!role) {
-        res.status(500).send(`invalid request. 
+        res.status(500).send(`invalid request.
         Check if the header for { content-type: application/json} parameter`)
         return '';
     }
-    
+
     const { payload, options } = tryGetPayloadAndOptions(message)
     //remove not accept chars
-    const topic = topifyStr(role); 
+    const topic = topifyStr(role);
 
     return db.collection('roles')
         .doc(role)
         .collection('messages')
-        .add(message)
+        .add({ ...message, createdAt:new Date() })
         .then( () => {
             // Send a message to devices subscribed to the provided topic.
             return admin.messaging().sendToTopic(topic, payload, options)
@@ -75,7 +75,7 @@ export let notifyRole = functions.https.onRequest((req, res) => {
         });
 });
 
-/** 
+/**
  *  Firestore Listener
  */
 
@@ -86,7 +86,7 @@ export let onNewMessageSendFCM = functions.firestore
         logger.info('new message was created!');
 
         const userId = event.params.userId;
-        
+
         // ES6 Destructuring assignment
         const { payload, options } = tryGetPayloadAndOptions(event.data.data())
 
@@ -116,7 +116,7 @@ function getPayloadAndOptions(content){
     // ES6 Destructuring assignment
     const { data, title, body, clickAction, icon, ...options_ } = content;
     // remove undefied fields
-    const notification = _.pickBy({ title, body, clickAction, icon }, _.identity); 
+    const notification = _.pickBy({ title, body, clickAction, icon }, _.identity);
 
     const payload = { notification };
     if (data && _.isObject(data)) {
@@ -165,7 +165,7 @@ export let subscribeNewDeviceToUserRolesTopic = functions.firestore
         const userId = event.params.userId;
 
         logger.info('subscribing token to roles topics', userId, token);
-        
+
         return db.collection('users')
             .doc(userId)
             .get()
@@ -181,7 +181,7 @@ export let subscribeNewDeviceToUserRolesTopic = functions.firestore
     })
 
 function subcribeToRolesTopics(token, roles:Array<string>){
-    const promises = roles.map(role => 
+    const promises = roles.map(role =>
         messaging.subscribeToTopic(token, role))
 
     return Promise.all(promises);
