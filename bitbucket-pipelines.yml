@@ -9,19 +9,19 @@ pipelines:
   default:
     - step:
         script:
-          - npm install -g angular-cli
+          - npm install -g @angular/cli
           - npm install
           - ng test
   branches:
     develop:
       - step:
           script:
-          - npm install -g angular-cli
+          - npm install -g @angular/cli
           - npm install
           - ng test
     master:
       - step:
           script:
-          - npm install -g angular-cli
+          - npm install -g @angular/cli
           - npm install
           - ng test
