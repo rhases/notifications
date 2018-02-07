@@ -11,17 +11,17 @@ pipelines:
         script:
           - npm install -g @angular/cli
           - npm install
-          - ng test
+          - ng build
   branches:
     develop:
       - step:
           script:
           - npm install -g @angular/cli
           - npm install
-          - ng test
+          - ng build
     master:
       - step:
           script:
           - npm install -g @angular/cli
           - npm install
-          - ng test
+          - ng build
