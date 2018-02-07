@@ -40,14 +40,14 @@ Run `firebase login` in the first deploy.
 
 ## Deploy Homolog
 RUn `firebase use homolog`
-Run `ng build`
+Run `ng build --dev`
 Run `firebase deploy --only hosting` for deploy frontend project.
 
 Run `firebase deploy --only functions` for deploy backend project.
 
 ## Deploy Prod
 Run `firebase use prod`
-Run `ng build --env=prod`
+Run `ng build --prod`
 Run `firebase deploy --only hosting` for deploy frontend project.
 Run `firebase deploy --only functions` for deploy backend project.
 

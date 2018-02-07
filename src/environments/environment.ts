@@ -13,6 +13,6 @@ export const environment = {
     storageBucket: 'notifications-homolog.appspot.com',
     messagingSenderId: '684146341663'
   },
-  rhasesAuthServiceHost: 'https://auth.homolog.api.rhases.com.br',
-  loginUrl: 'http://parceiro.rhases.com.br/notificacoes'
+  rhasesAuthServiceHost: 'http://auth.homolog.api.rhases.com.br',
+  loginUrl: 'http://parceiro.homolog.rhases.com.br/notificacoes'
 };
