@@ -29,6 +29,7 @@
     "zone.js": "^0.8.19",
     "@angular/flex-layout": "^2.0.0-beta.12",
     "@types/howler": "^2.0.5",
+    "angular2-moment": "^1.8.0",
     "angularfire2": "^5.0.0-rc.6",
     "firebase": "^4.9.0",
     "howler": "^2.0.8"

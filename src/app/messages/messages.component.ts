@@ -3,15 +3,18 @@ import { MatIconRegistry, MatDialog } from '@angular/material';
 import { DomSanitizer } from '@angular/platform-browser';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { AngularFireAuth } from 'angularfire2/auth';
- // import { DialogComponent } from './dialog/dialog.component';
+// import { DialogComponent } from './dialog/dialog.component';
 import 'rxjs/add/operator/filter';
 
 
 import { Observable } from 'rxjs/Observable';
+import { combineLatest } from 'rxjs/observable/combineLatest';
 import { PushNotificationService } from '../../components/push-notification/push-notification.service';
 // import { snapshotToArray } from '../../../components/util';
 
 import { Howl } from 'howler';
+
+import * as _ from 'lodash';
 
 
 
@@ -20,7 +23,7 @@ import { Howl } from 'howler';
 })
 export class MessagesComponent implements OnInit {
   userUid;
-  messages = [];
+  messages: Observable<any[]>;
   sound: Howl;
 
   constructor(
@@ -34,7 +37,7 @@ export class MessagesComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.afAuth.auth.onAuthStateChanged( user => {
+    this.afAuth.auth.onAuthStateChanged(user => {
       if (user) {
         // User is signed in.
         console.log(user);
@@ -45,7 +48,6 @@ export class MessagesComponent implements OnInit {
         console.log('user not authenticated');
       }
     });
-    this.playSoundAlert();
   }
 
   loadMessages(userUid) {
@@ -54,29 +56,39 @@ export class MessagesComponent implements OnInit {
       .doc(userUid);
 
     // private messages
-    userRef
+    let privateMessages = userRef
       .collection('messages')
       .valueChanges()
-      .subscribe(message => { self.messages.push(message); });
 
     // messages to user roles
     userRef
       .valueChanges()
       .forEach(user => {
-        user['roles'].forEach(role => this.loadTopic(role) );
-       });
+        let observables = [privateMessages].concat(user['roles'].map(role => this.loadTopic(role)));
+
+        self.messages = combineLatest(observables,
+          (...messageArrays) => _.orderBy(_.flatten(messageArrays), 'createdAt', 'desc'))
+
+        self.messages
+          .subscribe(messages => { this.playSoundAlert(); });
+      });
+
+
 
   }
 
   loadTopic(role) {
+    // console.log(`Loading to ${role}...`)
     const self = this;
-    this.db.collection('roles')
+
+    let obs = this.db.collection('roles')
       .doc(role)
       .collection('messages')
       .valueChanges()
-      .subscribe(messages =>
-        messages.forEach(
-          message => self.messages.push(message)));
+
+    // obs.subscribe(z => console.log(z))
+
+    return obs;
   }
 
   playSoundAlert() {

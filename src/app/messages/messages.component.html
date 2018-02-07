@@ -1,11 +1,12 @@
 <div fxLayout="column" fxFlex>
   <mat-list>
-    <mat-list-item *ngFor="let message of messages">
+    <mat-list-item *ngFor="let message of messages | async">
         <!-- <mat-icon>priority_high</mat-icon>
         <i class="material-icons">image</i> -->
          <!-- <img class="material-icons" src={{message.icon}} /> -->
         <!-- <mat-icon>priority_high</mat-icon> -->
-        <h3 mat-line>{{message.title}}</h3>
+        <h3 mat-line>{{message.title}} <small title="{{message.createdAt}}">( {{message.createdAt | amTimeAgo}} )</small></h3>
+        <code></code>
         <p mat-line>
           <span>{{message.body}}</span>
         </p>

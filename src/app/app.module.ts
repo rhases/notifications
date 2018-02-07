@@ -22,6 +22,12 @@ import { MyMaterialModule } from './my-material.module';
 import { PushNotificationModule } from '../components/push-notification';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 
+import { MomentModule } from 'angular2-moment';
+
+
+import * as moment from 'moment'
+moment.locale("pt-br");
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -39,6 +45,7 @@ import { AngularFirestoreModule } from 'angularfire2/firestore';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     AngularFireAuthModule, // imports firebase/auth, only needed for auth features,
+    MomentModule
   ],
   providers: [AuthGuard],
   bootstrap: [AppComponent]

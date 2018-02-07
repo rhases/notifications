@@ -16,7 +16,7 @@ import { PushNotificationService } from '../../components/push-notification/push
 })
 export class DevicesComponent implements OnInit {
   userUid;
-  tokens = [];
+  tokens: Observable<any[]>;
 
   constructor(
     private pushNotificationService: PushNotificationService,
@@ -48,14 +48,10 @@ export class DevicesComponent implements OnInit {
 
   loadDevices(userUid) {
     const self = this;
-    this.db.collection('users')
+    self.tokens = this.db.collection('users')
       .doc(userUid)
       .collection('fcmTokens')
-      .valueChanges()
-      .subscribe(tokens_ =>
-        tokens_.forEach(token =>
-          self.tokens.push(token))
-      );
+      .valueChanges();
   }
 
 
