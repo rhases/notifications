@@ -37,6 +37,7 @@ export class LoginComponent implements OnInit {
             return this.afAuth.auth
             .signInWithCustomToken(params.token) // signin in the firebase
             .then(this.updateProfile(this.authorization))
+            .then(this.setLocal)
             .then(() => this.router.navigateByUrl(this.returnUrl))
             .catch(function (error) {
                 // Handle Errors here.
@@ -46,6 +47,10 @@ export class LoginComponent implements OnInit {
                 console.error(errorCode, errorMessage);
             });
         });
+    }
+
+    setLocal(rhasesUser) {
+        return localStorage.setItem('currentUser', rhasesUser);
     }
 
     checkToken(token) {
@@ -92,6 +97,7 @@ export class LoginComponent implements OnInit {
                     .collection('users')
                     .doc(rhasesUser._id)
                     .set({ roles: rhasesUser.roles })
+                    .then( () => rhasesUser)
             );
         };
     }
