@@ -1,11 +1,11 @@
 <div fxLayout="column" fxFlex>
-  
+
   <mat-card>
     <mat-card-title>Receber Alertas nesse Dispositivo</mat-card-title>
     <mat-card-actions><button mat-raised-button (click)="authorize()">Cadastrar</button></mat-card-actions>
   </mat-card>
   <mat-nav-list>
-    <mat-list-item *ngFor="let token of tokens">
+    <mat-list-item *ngFor="let token of tokens | async">
       <mat-icon>perm_device_information</mat-icon>
       <span>{{token}}</span>
     </mat-list-item>
