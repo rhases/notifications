@@ -11,17 +11,26 @@ pipelines:
         script:
           - npm install -g angular-cli
           - npm install
-          - ng test
+          - ng build
+          - cd functions
+          - npm run lint
+          - npm run build
   branches:
     develop:
       - step:
           script:
           - npm install -g angular-cli
           - npm install
-          - ng test
+          - ng build
+          - cd functions
+          - npm run lint
+          - npm run build
     master:
       - step:
           script:
           - npm install -g angular-cli
           - npm install
-          - ng test
+          - ng build
+          - cd functions
+          - npm run lint
+          - npm run build
