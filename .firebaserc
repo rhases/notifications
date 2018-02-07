@@ -1,5 +1,7 @@
 {
   "projects": {
-    "default": "notifications-homolog"
+    "default": "notifications-homolog",
+    "prod": "notifications-prod",
+    "homolog": "notifications-homolog"
   }
 }

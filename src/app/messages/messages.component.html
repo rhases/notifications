@@ -1,0 +1,16 @@
+<div fxLayout="column" fxFlex>
+  <mat-list>
+    <mat-list-item *ngFor="let message of messages">
+        <!-- <mat-icon>priority_high</mat-icon>
+        <i class="material-icons">image</i> -->
+         <!-- <img class="material-icons" src={{message.icon}} /> -->
+        <!-- <mat-icon>priority_high</mat-icon> -->
+        <h3 mat-line>{{message.title}}</h3>
+        <p mat-line>
+          <span>{{message.body}}</span>
+        </p>
+        <a mat-raised-button color="accent"
+         href={{message.clickAction}} >Ir</a>
+    </mat-list-item>
+  </mat-list>
+</div>

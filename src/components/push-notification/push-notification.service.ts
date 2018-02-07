@@ -26,7 +26,7 @@ export class PushNotificationService {
         if (currentToken) {
           console.log('Got FCM device token:', currentToken);
           // Save the Device Token to the datastore.
-          self.db
+          return self.db
             .collection('users')
             .doc(userUid)
             .collection('fcmTokens')

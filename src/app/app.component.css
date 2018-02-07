@@ -1,0 +1,10 @@
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+
+body {
+    margin: 0px !important;
+    padding: 0px;
+}
+
+.menu-spacer {
+    width: 100%;
+}

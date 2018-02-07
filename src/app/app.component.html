@@ -1,13 +1,22 @@
-<!-- main app container -->
-<div class="jumbotron">
+<mat-toolbar color="primary">
 
-  <div class="container">
-  
-    <div class="col-sm-8 col-sm-offset-2">
-    
-      <!-- <alert></alert> -->
-    
-      <router-outlet></router-outlet>
-      </div>
-    </div>
-</div>
+  <span>Notificações</span>
+  <span class="menu-spacer"></span>
+  <button mat-button [matMenuTriggerFor]="appMenu">
+    <mat-icon>menu</mat-icon> Menu</button>
+
+</mat-toolbar>
+
+<mat-menu #appMenu="matMenu">
+  <button mat-menu-item> Login </button>
+</mat-menu>
+
+<nav mat-tab-nav-bar>
+  <a mat-tab-link *ngFor="let link of navLinks" [routerLink]="link.path" routerLinkActive #rla="routerLinkActive" [active]="rla.isActive">
+    <mat-icon>{{link.icon}}</mat-icon>
+    &nbsp;
+    {{link.label}}
+  </a>
+</nav>
+
+<router-outlet></router-outlet>
