@@ -8,6 +8,6 @@ export const environment = {
     storageBucket: 'notifications-prod.appspot.com',
     messagingSenderId: '496879395864'
   },
-  rhasesAuthServiceHost: 'http://auth.api.rhases.com.br',
+  rhasesAuthServiceHost: 'https://auth.api.rhases.com.br',
   loginUrl: 'http://parceiro.rhases.com.br/notificacoes'
 };
